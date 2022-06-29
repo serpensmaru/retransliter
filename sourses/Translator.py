@@ -4,22 +4,27 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
-class Edge():
+
+class Edge:
     """ Класс для загрузки драйверов и запуска браузера"""
-    def way_driver(self):
+    @staticmethod
+    def way_driver():
         """ Получаем директорию для драйвера"""
-        way_driver = path.join(getcwd(), "driver") # получили путь текущей директории + папка для driver
+        way_driver = path.join(getcwd(), "driver")  # получили путь текущей директории + папка для driver
         return way_driver
+
     def install_driver(self):
         """Установка драйвера в директорию"""
         way = self.way_driver()
         path_driver = EdgeChromiumDriverManager(path=way).install()
         return path_driver
+
     def open_edge(self):
         """ Открытие браузера"""
         path_drivers = self.install_driver()
         driver = webdriver.Edge(path_drivers)
         return driver
+
 
 class Tranlator(Edge):
     def __init__(self, n):
@@ -33,6 +38,7 @@ class Tranlator(Edge):
             self.input = '//*[@id="fakeArea"]'
             self.out = '//*[@id="translation"]'
             self.clear = '/html/body/div[1]/main/div[1]/div[1]/div[3]/div[1]/div/div[3]/button'
+        self.driver = None
 
     def site_translator(self):
         """ Открываем браузер и переходим по URL"""
@@ -48,5 +54,6 @@ class Tranlator(Edge):
         res = self.driver.find_element(By.XPATH, self.out).text
         self.driver.find_element(By.XPATH, self.clear).click()
         return res
+
     def closed(self):
         self.driver.close()
